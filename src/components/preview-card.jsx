@@ -2,11 +2,11 @@ import { Avatar, Box, HStack, Stack, Text, VStack } from '@chakra-ui/react'
 import { FaArrowRightLong } from 'react-icons/fa6'
 import { useSelector } from 'react-redux'
 
-const PreviewCard = () => {
+const PreviewCard = ({ style }) => {
   const { profile_picture, email_address, first_name, last_name, links } =
     useSelector((state) => state.profile)
   return (
-    <Stack alignItems={'center'} mt={-32}>
+    <Stack alignItems={'center'} mt={style?.marginTop}>
       <Box
         maxW={'320px'}
         bg='white'

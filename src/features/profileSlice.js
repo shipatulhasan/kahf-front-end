@@ -8,13 +8,13 @@ const initialState = {
   links: [
     {
       platform: 'github',
-      link: '',
+      url: '',
       background: '#000',
       icon: FaGithub
     },
     {
       platform: 'youtube',
-      link: '',
+      url: '',
       background: '#EB393E',
       icon: FaYoutube
     }
@@ -29,16 +29,20 @@ const profileSlice = createSlice({
   reducers: {
     addLink: (state, action) => {
       const exist = state.links.find(
-        (i) => i.paltform == action.payload.paltform
+        (i) => i.platform == action.payload.platform
       )
-      if (exist) {
-        exist.link = action.payload.link
-      } else {
+      if (!exist) {
         state.links.push(action.payload)
       }
+    },
+    updateLink: (state, action) => {
+      state.links[action.payload.id] = action.payload
+    },
+    removeLink: (state, action) => {
+      state.links.splice(action.payload, 1)
     }
   }
 })
 
-export const { addLink } = profileSlice.actions
+export const { addLink, updateLink, removeLink } = profileSlice.actions
 export default profileSlice.reducer

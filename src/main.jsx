@@ -7,8 +7,8 @@ import { ChakraProvider } from '@chakra-ui/react'
 
 createRoot(document.getElementById('root')).render(
   <ChakraProvider>
-      <Provider store={store}>
-        <App />
-      </Provider>
+    <Provider store={store}>
+      <App />
+    </Provider>
   </ChakraProvider>
 )
