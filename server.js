@@ -1,6 +1,7 @@
 import cors from 'cors'
 import express from 'express'
 import mongoose from 'mongoose'
+import rootRouter from './api/router/rootRouter.js'
 const port = process.env.PORT || 5000
 const app = express()
 app.get('/', (req, res) => {
@@ -18,4 +19,6 @@ try {
 } catch (error) {
   console.log('Unable to connect mongodb', error.message)
 }
+rootRouter(app)
+
 app.listen(port, () => console.log(`Server running on ${port}`))
