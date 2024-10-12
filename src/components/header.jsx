@@ -39,7 +39,7 @@ const Header = () => {
       <Image src='https://i.ibb.co.com/rvpb0wK/Screenshot-2024-10-11-210901.png' />
       <HStack>
         {NavLinks.map((item, i) => {
-          let isActive = pathname.includes(item.pathname)
+          let isActive = pathname == item.pathname
           return (
             <CommonButton
               key={`nav-link-${i}`}

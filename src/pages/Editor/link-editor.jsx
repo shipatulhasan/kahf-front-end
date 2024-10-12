@@ -5,6 +5,7 @@ import {
   IconButton,
   Input,
   Select,
+  Stack,
   Text,
   VStack
 } from '@chakra-ui/react'
@@ -21,6 +22,7 @@ import {
 } from '../../features/profileSlice'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { MdDragHandle } from 'react-icons/md'
+import CommonButton from '../../components/common-button'
 
 const LinkEditor = () => {
   return (
@@ -102,8 +104,7 @@ const CustomizeLinks = () => {
     }
   }
   return (
-    <Box p={5}>
-      {/* Title */}
+    <Stack p={5}>
       <VStack align='start' mb={5}>
         <Text fontSize='2xl' fontWeight='bold'>
           Customize your links
@@ -113,8 +114,6 @@ const CustomizeLinks = () => {
           world!
         </Text>
       </VStack>
-
-      {/* Add new link button */}
       <Button
         colorScheme='purple'
         onClick={() =>
@@ -213,6 +212,19 @@ const CustomizeLinks = () => {
           )}
         </Droppable>
       </DragDropContext>
-    </Box>
+      <Stack w={'full'} alignItems={'flex-end'}>
+        <CommonButton
+          data={{
+            size: 'sm',
+            // icon: FaLink,
+            bg: '#633BEF',
+            text: ' Save Changes',
+            color: '#fff',
+            border: `0px`
+            // handleClick: () => navigate('/preview')
+          }}
+        />
+      </Stack>
+    </Stack>
   )
 }
