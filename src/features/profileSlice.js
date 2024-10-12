@@ -36,13 +36,18 @@ const profileSlice = createSlice({
       }
     },
     updateLink: (state, action) => {
-      state.links[action.payload.id] = action.payload
+      const currentLink = state.links[action.payload.id]
+      state.links[action.payload.id] = { ...currentLink, ...action.payload }
     },
     removeLink: (state, action) => {
       state.links.splice(action.payload, 1)
+    },
+    updateLinksOrder: (state, action) => {
+      state.links = action.payload
     }
   }
 })
 
-export const { addLink, updateLink, removeLink } = profileSlice.actions
+export const { addLink, updateLink, removeLink, updateLinksOrder } =
+  profileSlice.actions
 export default profileSlice.reducer
