@@ -97,14 +97,16 @@ const DetailsForm = () => {
     <Box p={5}>
       <VStack spacing={6} align='start'>
         <HStack
-          textAlign='center'
-          w='100%'
+          w={'full'}
+          flexWrap={'wrap'}
           p={4}
           bg='gray.50'
           borderRadius='md'
           boxShadow='sm'>
-          <FormLabel w={'200px'}>Profile Picture</FormLabel>
-          <HStack flex={1} gap={5}>
+          <FormLabel w={{ base: 'full', md: '100px', lg: '200px' }}>
+            Profile Picture
+          </FormLabel>
+          <HStack flex={1} flexWrap={'wrap'} gap={5}>
             <Box position='relative' display='inline-block' overflow={'hidden'}>
               <Image w={150} h={150} rounded={'md'} src={profile_picture} />
 
@@ -135,7 +137,12 @@ const DetailsForm = () => {
                 <Text>Change Image</Text>
               </Stack>
             </Box>
-            <Text textAlign={'start'} mt={2} fontSize='sm' color='gray.500'>
+            <Text
+              flex={1}
+              textAlign={'start'}
+              mt={2}
+              fontSize='sm'
+              color='gray.500'>
               Image must be below 1024x1024px. Use PNG, JPG, or BMP format.
             </Text>
           </HStack>
@@ -152,12 +159,15 @@ const DetailsForm = () => {
             <FormControl
               key={`profile-details-${i}`}
               isInvalid={errors[item?.name]}>
-              <HStack justifyContent={'space-between'}>
-                <FormLabel w={'200px'}>{item?.label}</FormLabel>
-                <Stack flex={1} spacing={0}>
+              <HStack w={'full'} flexWrap={'wrap'} gap={5}>
+                <FormLabel w={{ base: 'full', md: '100px', lg: '200px' }}>
+                  {item?.label}
+                </FormLabel>
+                <Stack spacing={0} w={'full'} flex={1}>
                   <Input
                     placeholder={item?.placeholder}
                     value={item?.value}
+                    minW={'100px'}
                     onBlur={handleBlur}
                     name={item?.name}
                     onChange={(e) =>

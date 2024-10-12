@@ -3,6 +3,7 @@ import { FaLink } from 'react-icons/fa'
 import CommonButton from './common-button'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { CgProfile } from 'react-icons/cg'
+import { FaRegEye } from 'react-icons/fa6'
 
 const Header = () => {
   const { pathname } = useLocation()
@@ -45,6 +46,7 @@ const Header = () => {
               key={`nav-link-${i}`}
               data={{
                 ...item,
+                break: true,
                 className: `${isActive ? 'active' : ''}`,
                 handleClick: () => navigate(item.pathname)
               }}
@@ -65,7 +67,8 @@ const Header = () => {
       <CommonButton
         data={{
           size: 'sm',
-          // icon: FaLink,
+          break: true,
+          icon: FaRegEye,
           bg: '#fff',
           text: 'Preview',
           border: `1px solid #633BEF`,

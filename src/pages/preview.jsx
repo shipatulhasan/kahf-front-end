@@ -8,21 +8,24 @@ import {
 } from '@chakra-ui/react'
 import PreviewCard from '../components/preview-card'
 import CommonButton from '../components/common-button'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 
 const Preview = () => {
   const navigate = useNavigate()
-  const { links } = useSelector((state) => state.profile)
   const toast = useToast()
-  const { onCopy, value, setValue, hasCopied } = useClipboard()
-  useEffect(() => {
-    const urls = links?.map((i) => i?.url).join(',')
-    setValue(urls)
-  }, [])
+
+  const { onCopy, value, setValue, hasCopied } = useClipboard(
+    window.location.href
+  )
   return (
-    <Box bg='gray.100' minH='100vh' display='flex' flexDirection='column'>
+    <Box
+      bg='gray.100'
+      minH='100vh'
+      display='flex'
+      flexDirection='column'
+      pb={10}>
       {/* Header Section */}
       <Box
         bg='#633BEF'

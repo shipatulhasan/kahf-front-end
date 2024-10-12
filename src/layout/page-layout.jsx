@@ -4,16 +4,22 @@ import React from 'react'
 const PageLaout = ({ data }) => {
   return (
     <Container maxW={'container.xl'}>
-      <Grid templateColumns='repeat(6, 1fr)' gap={5}>
+      <Grid templateColumns={'repeat(6, 1fr)'} gap={5}>
         <GridItem
-          colSpan={2}
+          colSpan={{ base: 6, md: 3, xl: 2 }}
           // bg={'#fff'}
           rounded={'md'}>
-          <Stack position={'sticky'} top={10}>
+          <Stack
+            position={'sticky'}
+            top={10}
+            display={{ base: 'none', md: 'flex' }}>
             {data.leftItem}
           </Stack>
         </GridItem>
-        <GridItem colSpan={4} bg={'#fff'} rounded={'md'}>
+        <GridItem
+          colSpan={{ base: 6, md: 3, xl: 4 }}
+          bg={'#fff'}
+          rounded={'md'}>
           {data.rightItem}
         </GridItem>
       </Grid>
