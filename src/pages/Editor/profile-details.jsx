@@ -159,7 +159,7 @@ const DetailsForm = () => {
             <FormControl
               key={`profile-details-${i}`}
               isInvalid={errors[item?.name]}>
-              <HStack w={'full'} flexWrap={'wrap'} gap={5}>
+              <HStack w={'full'} flexWrap={'wrap'}>
                 <FormLabel w={{ base: 'full', md: '100px', lg: '200px' }}>
                   {item?.label}
                 </FormLabel>
