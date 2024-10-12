@@ -3,6 +3,7 @@ import MainLayout from '../layout/main-layout'
 import LinkEditor from '../pages/Editor/link-editor'
 import Preview from '../pages/preview'
 import ProfileDetails from '../pages/Editor/profile-details'
+import Signup from '../pages/signup-page'
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,14 @@ const router = createBrowserRouter([
         element: <ProfileDetails />
       }
     ]
+  },
+  {
+    path: '/preview',
+    element: <Preview />
+  },
+  {
+    path: '/sign-up',
+    element: <Signup />
   },
   {
     path: '/preview',

@@ -18,6 +18,7 @@ import PageLaout from '../../layout/page-layout'
 import { updateProfileDetails } from '../../features/profileSlice'
 import { useDispatch } from 'react-redux'
 import CommonButton from '../../components/common-button'
+import { handleBlur, validateField } from '../../lib/handler'
 const ProfileDetails = () => {
   return (
     <PageLaout
@@ -49,25 +50,6 @@ const DetailsForm = () => {
       }
       reader.readAsDataURL(file)
     }
-  }
-  const validateField = (name, value) => {
-    let error = ''
-    if (!value) {
-      error = `${name} is required`
-    } else if (name === 'email' && !/\S+@\S+\.\S+/.test(value)) {
-      error = 'Enter a valid email address'
-    }
-    return error
-  }
-
-  const handleBlur = (e) => {
-    const { name, value } = e.target
-    const error = validateField(name, value)
-
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      [name]: error
-    }))
   }
 
   const inputs = [
@@ -168,7 +150,7 @@ const DetailsForm = () => {
                     placeholder={item?.placeholder}
                     value={item?.value}
                     minW={'100px'}
-                    onBlur={handleBlur}
+                    onBlur={(e) => handleBlur(e, setErrors)}
                     name={item?.name}
                     onChange={(e) =>
                       dispatch(
