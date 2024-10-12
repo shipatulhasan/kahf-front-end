@@ -46,7 +46,7 @@ const Header = () => {
               data={{
                 ...item,
                 className: `${isActive ? 'active' : ''}`,
-                handleNavigate: () => navigate(item.pathname)
+                handleClick: () => navigate(item.pathname)
               }}
             />
           )
@@ -69,7 +69,7 @@ const Header = () => {
           bg: '#fff',
           text: 'Preview',
           border: `1px solid #633BEF`,
-          handleNavigate: () => navigate('/preview')
+          handleClick: () => navigate('/preview')
         }}
       />
     </HStack>

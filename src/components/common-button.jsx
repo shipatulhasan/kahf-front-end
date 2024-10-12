@@ -7,7 +7,7 @@ const CommonButton = ({ data }) => {
       leftIcon={data?.icon && <data.icon />}
       bg={data.bg}
       _hover={{ opacity: '.8' }}
-      onClick={data.handleNavigate}
+      onClick={data.handleClick}
       color={data.color ? data?.color : '#000'}
       border={data?.border}
       variant='outline'>
