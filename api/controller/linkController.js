@@ -3,10 +3,11 @@ import Link from '../model/Link.js'
 export const addLinks = async (req, res) => {
   try {
     const { links } = req.body
+
     const bulkOperations = links.map((link) => ({
       updateOne: {
         filter: { user: req.user, platform: link.platform },
-        update: { $set: { url: link.url } },
+        update: { $set: link },
         upsert: true
       }
     }))
