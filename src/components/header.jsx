@@ -1,4 +1,4 @@
-import { border, Button, HStack, Image } from '@chakra-ui/react'
+import { border, Box, Button, HStack, Image } from '@chakra-ui/react'
 import { FaLink } from 'react-icons/fa'
 import CommonButton from './common-button'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -58,7 +58,9 @@ const Header = () => {
       rounded={'md'}
       w={'full'}
       h={'60px'}>
-      <Image src='https://i.ibb.co.com/rvpb0wK/Screenshot-2024-10-11-210901.png' />
+      <Box cursor={'pointer'} onClick={() => navigate('/')}>
+        <Image src='https://i.ibb.co.com/rvpb0wK/Screenshot-2024-10-11-210901.png' />
+      </Box>
       <HStack>
         {NavLinks.map((item, i) => {
           let isActive = pathname == item.pathname
