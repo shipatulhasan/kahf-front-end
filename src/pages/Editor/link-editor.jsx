@@ -7,9 +7,10 @@ import {
   Select,
   Stack,
   Text,
+  useToast,
   VStack
 } from '@chakra-ui/react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaGithub, FaLink, FaYoutube } from 'react-icons/fa'
 import PreviewCard from '../../components/preview-card'
 import PageLaout from '../../layout/page-layout'
@@ -17,12 +18,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   addLink,
   removeLink,
+  saveLinks,
   updateLink,
   updateLinksOrder
 } from '../../features/profileSlice'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { MdDragHandle } from 'react-icons/md'
 import CommonButton from '../../components/common-button'
+import axiosInstance from '../../lib/axios-instance'
 
 const LinkEditor = () => {
   return (
@@ -38,7 +41,9 @@ export default LinkEditor
 
 const CustomizeLinks = () => {
   const { links } = useSelector((state) => state.profile)
+  const [isLoading, setIsLoading] = useState(false)
   const dispatch = useDispatch()
+  const toast = useToast()
   const isValidUrl = (url) => {
     try {
       new URL(url)
@@ -73,7 +78,7 @@ const CustomizeLinks = () => {
   const handleInputChange = (i, field, value) => {
     const currentLink = links[i]
     const selected = platforms.find((i) => i.platform == value)
-    const isValid = field === 'url' ? isValidUrl(value) : currentLink.isValidUrl
+    const isValid = field === 'url' ? isValidUrl(value) : currentLink.isValid
     dispatch(
       updateLink({
         id: i,
@@ -103,6 +108,43 @@ const CustomizeLinks = () => {
       dispatch(updateLinksOrder(reorderLinks))
     }
   }
+  const handleSubmit = () => {
+    setIsLoading(true)
+    axiosInstance({
+      url: '/links',
+      method: 'PUT',
+      data: { links }
+    })
+      .then((res) => {
+        if (res.status == 201) {
+          toast({
+            title: res.data.message,
+            status: 'success',
+            isClosable: true
+          })
+        }
+      })
+      .catch((err) =>
+        toast({
+          title: err?.response?.data?.message,
+          status: 'error',
+          isClosable: true
+        })
+      )
+      .finally(() => setIsLoading(false))
+  }
+  useEffect(() => {
+    axiosInstance({
+      url: '/links',
+      method: 'GET'
+    })
+      .then((res) => {
+        if (res.status == 200) {
+          res?.data?.data?.length && dispatch(saveLinks(res?.data?.data))
+        }
+      })
+      .catch((err) => console.log(err))
+  }, [])
   return (
     <Stack p={5}>
       <VStack align='start' mb={5}>
@@ -132,12 +174,10 @@ const CustomizeLinks = () => {
         w={'full'}>
         + Add new link
       </Button>
-
-      {/* Links List */}
       <DragDropContext onDragEnd={handleDragDrop}>
         <Droppable droppableId='link-list' type='link-list'>
           {(provided) => (
-            <VStack
+            <Stack
               spacing={4}
               w='100%'
               ref={provided.innerRef}
@@ -173,9 +213,7 @@ const CustomizeLinks = () => {
                           Remove
                         </Text>
                       </HStack>
-
-                      {/* Platform Selection */}
-                      <VStack align='start' spacing={2}>
+                      <Stack align='start' spacing={2}>
                         <Text>Platform</Text>
                         <Select
                           placeholder='Select platform'
@@ -184,31 +222,36 @@ const CustomizeLinks = () => {
                             handleInputChange(i, 'platform', e.target.value)
                           }>
                           {platforms.map((item) => (
-                            <option key={item.platform} value={item.platform}>
-                              <item.icon /> {item.label}
+                            <option
+                              key={item.platform}
+                              value={item.platform}
+                              disabled={links?.some(
+                                (i) => i?.platform == item?.platform
+                              )}>
+                              {item.label}
                             </option>
                           ))}
                         </Select>
-                      </VStack>
+                      </Stack>
 
                       {/* Link Input */}
-                      <VStack align='start' spacing={2} mt={4}>
+                      <Stack align='start' spacing={2} mt={4}>
                         <Text>Link</Text>
                         <Input
                           placeholder='Enter your link'
                           value={link.url}
-                          isInvalid={!link?.isValidUrl}
+                          isInvalid={!link?.isValid}
                           errorBorderColor='red.500'
                           onChange={(e) =>
                             handleInputChange(i, 'url', e.target.value)
                           }
                         />
-                      </VStack>
+                      </Stack>
                     </Box>
                   )}
                 </Draggable>
               ))}
-            </VStack>
+            </Stack>
           )}
         </Droppable>
       </DragDropContext>
@@ -216,12 +259,13 @@ const CustomizeLinks = () => {
         <CommonButton
           data={{
             size: 'sm',
-            // icon: FaLink,
+            isLoading,
+            isDisabled: links?.some((i) => !i.isValid),
             bg: '#633BEF',
             text: ' Save Changes',
             color: '#fff',
-            border: `0px`
-            // handleClick: () => navigate('/preview')
+            border: `0px`,
+            handleClick: handleSubmit
           }}
         />
       </Stack>

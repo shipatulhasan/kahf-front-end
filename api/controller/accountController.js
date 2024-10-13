@@ -6,7 +6,7 @@ import {
 } from '../helper/helper-func.js'
 import User from '../model/User.js'
 
-export const createUser = async (req, res) => {
+export const createUser = async (req, res, next) => {
   try {
     const { email_address, password } = req.body
     const existing = await User.findOne({ email_address })
@@ -22,16 +22,16 @@ export const createUser = async (req, res) => {
     const token = createToken(email_address)
     setCookie(res, token)
     await user.save()
-    res.status(200).json({
-      status: 200,
+    res.status(201).json({
+      status: 201,
       message: 'Data inserted successfully',
       user
     })
-  } catch (err) {
-    console.log(err)
+  } catch (error) {
+    next(error)
   }
 }
-export const verifyLogin = async (req, res) => {
+export const verifyLogin = async (req, res, next) => {
   try {
     const { email_address, password } = req.body
     const user = await User.findOne({ email_address })
@@ -46,25 +46,46 @@ export const verifyLogin = async (req, res) => {
     setCookie(res, token)
     res.status(200).json({ message: 'Login successful' })
   } catch (error) {
-    res.status(500).json({ message: 'Server Error', error })
+    next(error)
   }
 }
-export const getUser = async (req, res) => {
+export const getUser = async (req, res, next) => {
   try {
     const user = await User.findOne({ email_address: req.user }).select(
       '-password'
     )
-    console.log(user)
     res.status(200).json({
       status: 200,
       message: 'Success',
       user
     })
-  } catch (err) {
-    console.log(err)
+  } catch (error) {
+    next(error)
   }
 }
-export const logoutUser = (req, res) => {
-  res.clearCookie('token')
-  res.status(200).json({ message: 'Logged out successfully' })
+export const updateUser = async (req, res, next) => {
+  try {
+    const inputs = req.body
+    const updatedUser = await User.findOneAndUpdate(
+      { email_address: req.user },
+      { $set: inputs },
+      { new: true }
+    )
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'User not found' })
+    }
+    res
+      .status(200)
+      .json({ message: 'User updated successfully', user: updatedUser })
+  } catch (error) {
+    next(error)
+  }
+}
+export const logoutUser = (req, res, next) => {
+  try {
+    res.clearCookie('token')
+    res.status(200).json({ message: 'Logged out successfully' })
+  } catch (error) {
+    next(error)
+  }
 }

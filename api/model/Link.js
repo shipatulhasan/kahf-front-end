@@ -3,15 +3,18 @@ import mongoose from 'mongoose'
 const LinkSchema = new mongoose.Schema(
   {
     user: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: String,
       ref: 'User',
       required: true
     },
     platform: {
       type: String
     },
-    link: {
+    url: {
       type: String
+    },
+    isValid: {
+      type: Boolean
     }
   },
   { timestamps: true }

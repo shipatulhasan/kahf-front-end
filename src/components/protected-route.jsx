@@ -28,11 +28,10 @@ const ProtectedRoute = ({ children }) => {
           url: '/account',
           method: 'GET'
         })
-        if (response.data) {
-          console.log(response.data)
+        if (response?.data?.user) {
           dispatch(saveUser({ ...response?.data?.user }))
         } else {
-          throw new Error('No user data')
+          navigate('/login')
         }
 
         setIsLoading(false)

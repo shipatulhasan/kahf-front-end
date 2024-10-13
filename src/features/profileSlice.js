@@ -36,6 +36,9 @@ const profileSlice = createSlice({
         state.links.push(action.payload)
       }
     },
+    saveLinks: (state, action) => {
+      state.links = action.payload
+    },
     saveUser: (state, action) => {
       state.email_address = action.payload.email_address
       state.first_name = action.payload.first_name
@@ -65,6 +68,7 @@ export const {
   removeLink,
   updateLinksOrder,
   updateProfileDetails,
-  saveUser
+  saveUser,
+  saveLinks
 } = profileSlice.actions
 export default profileSlice.reducer

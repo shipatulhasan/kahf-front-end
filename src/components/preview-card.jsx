@@ -19,7 +19,7 @@ const PreviewCard = ({ style }) => {
         <Avatar
           border={'2px solid #633BEF'}
           size='xl'
-          name='Ben Wright'
+          name={email_address}
           src={profile_picture}
           mb={4}
         />

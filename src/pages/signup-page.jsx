@@ -8,7 +8,7 @@ const Signup = () => {
   const [isLoading, setIsLoading] = useState(false)
   const toast = useToast()
   const navigate = useNavigate()
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     setIsLoading(true)
     e.preventDefault()
     const form = e.target
@@ -25,7 +25,7 @@ const Signup = () => {
       data: obj
     })
       .then((data) => {
-        if (data.status == 200) {
+        if (data.status == 201) {
           toast({
             title: 'Account created successfully',
             status: 'success',

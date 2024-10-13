@@ -8,15 +8,17 @@ import {
   Input,
   Stack,
   Text,
+  useToast,
   VStack
 } from '@chakra-ui/react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import CommonButton from '../../components/common-button'
 import PreviewCard from '../../components/preview-card'
-import { updateProfileDetails } from '../../features/profileSlice'
+import { saveUser, updateProfileDetails } from '../../features/profileSlice'
 import PageLaout from '../../layout/page-layout'
 import { handleError } from '../../lib/handler'
+import axiosInstance from '../../lib/axios-instance'
 const ProfileDetails = () => {
   return (
     <PageLaout
@@ -30,14 +32,15 @@ const ProfileDetails = () => {
 
 export default ProfileDetails
 const DetailsForm = () => {
+  const [isLoading, setIsLoading] = useState(false)
   const { first_name, last_name, email_address, profile_picture } = useSelector(
     (state) => state.profile
   )
+  const toast = useToast()
 
   const dispatch = useDispatch()
-  const [errors, setErrors] = useState({})
+  const [errors, setErrors] = useState({ first_name, last_name })
   console.log(errors)
-
   const handleImageChange = (e) => {
     const file = e.target.files[0]
     if (file) {
@@ -74,6 +77,43 @@ const DetailsForm = () => {
       type: 'email'
     }
   ]
+  const handleSubmit = () => {
+    setIsLoading(true)
+    axiosInstance({
+      url: '/account',
+      method: 'PUT',
+      data: { first_name, last_name, profile_picture }
+    })
+      .then((res) => {
+        if (res.status == 200) {
+          toast({
+            title: res.data.message,
+            status: 'success',
+            isClosable: true
+          })
+        }
+      })
+      .catch((err) =>
+        toast({
+          title: err?.response?.data?.message,
+          status: 'error',
+          isClosable: true
+        })
+      )
+      .finally(() => setIsLoading(false))
+  }
+  useEffect(() => {
+    const obj = {}
+
+    if (!first_name) {
+      obj.first_name = 'First name is required'
+    }
+    if (!last_name) {
+      obj.last_name = 'Last name is required'
+    }
+
+    setErrors(obj)
+  }, [first_name, last_name])
   return (
     <Box p={5}>
       <VStack spacing={6} align='start'>
@@ -89,8 +129,15 @@ const DetailsForm = () => {
           </FormLabel>
           <HStack flex={1} flexWrap={'wrap'} gap={5}>
             <Box position='relative' display='inline-block' overflow={'hidden'}>
-              <Image w={150} h={150} rounded={'md'} src={profile_picture} />
-
+              <Image
+                w={150}
+                h={150}
+                rounded={'md'}
+                src={
+                  profile_picture ||
+                  'https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png'
+                }
+              />
               <Input
                 type='file'
                 position='absolute'
@@ -115,7 +162,7 @@ const DetailsForm = () => {
                 color='white'
                 textAlign='center'
                 p={2}>
-                <Text>Change Image</Text>
+                <Text>{profile_picture ? 'Change image' : 'Upload image'}</Text>
               </Stack>
             </Box>
             <Text
@@ -177,12 +224,12 @@ const DetailsForm = () => {
             data={{
               size: 'sm',
               isDisabled: Object.keys(errors)?.some((i) => errors[i] != ''),
-              // icon: FaLink,
+              isLoading,
               bg: '#633BEF',
               text: ' Save Changes',
               color: '#fff',
-              border: `0px`
-              // handleClick: () => navigate('/preview')
+              border: `0px`,
+              handleClick: handleSubmit
             }}
           />
         </Stack>

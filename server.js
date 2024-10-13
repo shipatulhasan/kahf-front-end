@@ -1,8 +1,9 @@
+import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import express from 'express'
 import mongoose from 'mongoose'
+import errorHandlerMiddleware from './api/middleware/handle-error.js'
 import rootRouter from './api/router/rootRouter.js'
-import cookieParser from 'cookie-parser'
 const port = process.env.PORT || 5000
 const app = express()
 app.use(
@@ -29,5 +30,6 @@ try {
   console.log('Unable to connect mongodb', error.message)
 }
 rootRouter(app)
+app.use(errorHandlerMiddleware)
 
 app.listen(port, () => console.log(`Server running on ${port}`))
