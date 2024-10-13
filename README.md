@@ -42,3 +42,8 @@ This project is a web application built using **React** and **Vite** for the fro
    npm run concurrently
    ```
 4. Open your browser and go to http://localhost:5173 for the frontend and http://localhost:5000 for the backend.
+5. **Credential**
+   ```bash
+   admin@example.com
+   1234567890
+   ```

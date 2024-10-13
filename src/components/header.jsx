@@ -75,16 +75,6 @@ const Header = () => {
             />
           )
         })}
-
-        {/* <CommonButton
-          data={{
-            size: 'sm',
-            icon: FaLink,
-            bg: '#633BEF',
-            color: '#ffff',
-            text: 'Profile details'
-          }}
-        /> */}
       </HStack>
       <HStack>
         <CommonButton

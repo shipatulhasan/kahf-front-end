@@ -16,7 +16,6 @@ const PreviewCard = ({ style }) => {
         rounded={'xl'}
         boxShadow='lg'
         textAlign='center'>
-        {/* Profile Image */}
         <Avatar
           border={'2px solid #633BEF'}
           size='xl'
@@ -25,7 +24,6 @@ const PreviewCard = ({ style }) => {
           mb={4}
         />
         <VStack spacing={2}>
-          {/* Name and Email */}
           <Text fontSize='xl' fontWeight='bold'>
             {first_name} {last_name}
           </Text>

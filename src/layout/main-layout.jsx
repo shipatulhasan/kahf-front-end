@@ -5,7 +5,6 @@ import { Outlet } from 'react-router-dom'
 const MainLayout = () => {
   return (
     <Container maxW={'container.xl'} minH={'100vh'}>
-      {/* Header section */}
       <Stack spacing={10}>
         <Header />
         <Outlet />

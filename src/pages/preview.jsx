@@ -26,7 +26,6 @@ const Preview = () => {
       display='flex'
       flexDirection='column'
       pb={10}>
-      {/* Header Section */}
       <Box
         bg='#633BEF'
         minH={300}
@@ -73,8 +72,6 @@ const Preview = () => {
           </HStack>
         </Container>
       </Box>
-
-      {/* Profile Card Section */}
       <PreviewCard style={{ marginTop: -24 }} />
     </Box>
   )
