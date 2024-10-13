@@ -10,7 +10,8 @@ export const createUser = async (req, res, next) => {
   try {
     const { email_address, password } = req.body
     const existing = await User.findOne({ email_address })
-    if (existing) res.status(400).json({ message: 'User already exist!!' })
+    if (existing)
+      return res.status(400).json({ message: 'User already exist!!' })
     const encryptPass = passEncryption(password)
     const user = new User({
       first_name: '',
