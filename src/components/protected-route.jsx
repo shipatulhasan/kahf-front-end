@@ -29,7 +29,8 @@ const ProtectedRoute = ({ children }) => {
           method: 'GET'
         })
         if (response.data) {
-          dispatch(saveUser(response.data))
+          console.log(response.data)
+          dispatch(saveUser({ ...response?.data?.user }))
         } else {
           throw new Error('No user data')
         }

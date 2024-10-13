@@ -7,7 +7,7 @@ export const validateField = (name, value) => {
   }
   return error
 }
-export const handleBlur = (e, setErrors) => {
+export const handleError = (e, setErrors) => {
   const { name, value } = e.target
   const error = validateField(name, value)
 

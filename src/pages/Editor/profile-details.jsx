@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -12,13 +11,12 @@ import {
   VStack
 } from '@chakra-ui/react'
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
-import PreviewCard from '../../components/preview-card'
-import PageLaout from '../../layout/page-layout'
-import { updateProfileDetails } from '../../features/profileSlice'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import CommonButton from '../../components/common-button'
-import { handleBlur, validateField } from '../../lib/handler'
+import PreviewCard from '../../components/preview-card'
+import { updateProfileDetails } from '../../features/profileSlice'
+import PageLaout from '../../layout/page-layout'
+import { handleError } from '../../lib/handler'
 const ProfileDetails = () => {
   return (
     <PageLaout
@@ -38,6 +36,7 @@ const DetailsForm = () => {
 
   const dispatch = useDispatch()
   const [errors, setErrors] = useState({})
+  console.log(errors)
 
   const handleImageChange = (e) => {
     const file = e.target.files[0]
@@ -148,18 +147,20 @@ const DetailsForm = () => {
                 <Stack spacing={0} w={'full'} flex={1}>
                   <Input
                     placeholder={item?.placeholder}
+                    isDisabled={item?.name == 'email_address'}
                     value={item?.value}
                     minW={'100px'}
-                    onBlur={(e) => handleBlur(e, setErrors)}
+                    onBlur={(e) => handleError(e, setErrors)}
                     name={item?.name}
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      handleError(e, setErrors)
                       dispatch(
                         updateProfileDetails({
                           key: item?.name,
                           value: e.target.value
                         })
                       )
-                    }
+                    }}
                   />
                   {errors[item.name] && (
                     <FormErrorMessage>
@@ -175,6 +176,7 @@ const DetailsForm = () => {
           <CommonButton
             data={{
               size: 'sm',
+              isDisabled: Object.keys(errors)?.some((i) => errors[i] != ''),
               // icon: FaLink,
               bg: '#633BEF',
               text: ' Save Changes',

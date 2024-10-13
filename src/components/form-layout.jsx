@@ -1,21 +1,16 @@
 import {
-  Avatar,
   Box,
   FormControl,
   FormErrorMessage,
   FormLabel,
-  HStack,
   Input,
   Stack,
-  Text,
-  VStack
+  Text
 } from '@chakra-ui/react'
 
 import React, { useState } from 'react'
-import { handleBlur } from '../lib/handler'
-import CommonButton from './common-button'
 import { Link } from 'react-router-dom'
-import { input } from 'framer-motion/client'
+import CommonButton from './common-button'
 
 const FormLayout = ({ data }) => {
   const [errors, setErrors] = useState({})
@@ -53,7 +48,6 @@ const FormLayout = ({ data }) => {
                 placeholder={item?.placeholder}
                 minW={'100px'}
                 type={item?.type}
-                onBlur={(e) => handleBlur(e, setErrors)}
                 name={item?.name}
               />
               {errors[item.name] && (

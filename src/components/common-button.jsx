@@ -13,6 +13,7 @@ const CommonButton = ({ data }) => {
     <Button
       className={data?.className}
       isLoading={data?.isLoading || false}
+      isDisabled={data.isDisabled || false}
       size={data?.size}
       w={data?.width || 'auto'}
       // leftIcon={{ md: data?.icon && <data.icon /> }}
