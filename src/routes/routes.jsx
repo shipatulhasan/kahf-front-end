@@ -4,11 +4,17 @@ import LinkEditor from '../pages/Editor/link-editor'
 import Preview from '../pages/preview'
 import ProfileDetails from '../pages/Editor/profile-details'
 import Signup from '../pages/signup-page'
+import Login from '../pages/login-page'
+import ProtectedRoute from '../components/protected-route'
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <MainLayout />,
+    element: (
+      <ProtectedRoute>
+        <MainLayout />
+      </ProtectedRoute>
+    ),
     children: [
       {
         path: '/',
@@ -22,15 +28,19 @@ const router = createBrowserRouter([
   },
   {
     path: '/preview',
-    element: <Preview />
+    element: (
+      <ProtectedRoute>
+        <Preview />
+      </ProtectedRoute>
+    )
   },
   {
     path: '/sign-up',
     element: <Signup />
   },
   {
-    path: '/preview',
-    element: <Preview />
+    path: '/login',
+    element: <Login />
   }
 ])
 export default router

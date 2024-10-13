@@ -63,7 +63,6 @@ const Preview = () => {
                   toast({
                     title: 'Links copied.',
                     status: 'success',
-                    duration: 9000,
                     isClosable: true
                   })
                 }

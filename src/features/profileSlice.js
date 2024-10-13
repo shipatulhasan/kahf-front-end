@@ -2,9 +2,10 @@ import { createSlice } from '@reduxjs/toolkit'
 import { FaGithub, FaYoutube } from 'react-icons/fa'
 
 const initialState = {
-  email_address: 'shipatulhasan328@gmail.com',
-  first_name: 'Shipatul Hasan',
-  last_name: 'Shakib',
+  email_address: '',
+  user_id: '',
+  first_name: '',
+  last_name: '',
   links: [
     {
       platform: 'github',
@@ -35,6 +36,13 @@ const profileSlice = createSlice({
         state.links.push(action.payload)
       }
     },
+    saveUser: (state, action) => {
+      state.email_address = action.payload.email_address
+      state.first_name = action.payload.first_name
+      state.last_name = action.payload.last_name
+      state.profile_picture = action.payload.profile_picture
+      state.user_id = action.payload._id
+    },
     updateLink: (state, action) => {
       const currentLink = state.links[action.payload.id]
       state.links[action.payload.id] = { ...currentLink, ...action.payload }
@@ -56,6 +64,7 @@ export const {
   updateLink,
   removeLink,
   updateLinksOrder,
-  updateProfileDetails
+  updateProfileDetails,
+  saveUser
 } = profileSlice.actions
 export default profileSlice.reducer

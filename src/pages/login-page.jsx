@@ -1,10 +1,10 @@
 import { Container, Stack, useToast } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import FormLayout from '../components/form-layout'
-import axiosInstance from '../lib/axios-instance'
 import { useNavigate } from 'react-router-dom'
+import axiosInstance from '../lib/axios-instance'
 
-const Signup = () => {
+const Login = () => {
   const [isLoading, setIsLoading] = useState(false)
   const toast = useToast()
   const navigate = useNavigate()
@@ -20,18 +20,19 @@ const Signup = () => {
     }
 
     axiosInstance({
-      url: '/account/create-user',
+      url: '/account/login',
       method: 'POST',
       data: obj
     })
       .then((data) => {
         if (data.status == 200) {
+          navigate('/')
+        } else {
           toast({
-            title: 'Account created successfully',
-            status: 'success',
+            title: data?.message,
+            status: 'error',
             isClosable: true
           })
-          navigate('/')
         }
       })
       .catch((err) =>
@@ -48,9 +49,9 @@ const Signup = () => {
       <Stack minH={'100vh'} justifyContent={'center'}>
         <FormLayout
           data={{
-            title: 'Sign up',
-            footerText: 'Already have an account?',
-            footerButtonText: 'login',
+            title: 'Sign in',
+            footerText: `Doesn't have an account?`,
+            footerButtonText: 'sign-up',
             handleSubmit,
             isLoading
           }}
@@ -60,4 +61,4 @@ const Signup = () => {
   )
 }
 
-export default Signup
+export default Login

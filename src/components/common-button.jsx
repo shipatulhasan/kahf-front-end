@@ -12,9 +12,12 @@ const CommonButton = ({ data }) => {
   return (
     <Button
       className={data?.className}
+      isLoading={data?.isLoading || false}
       size={data?.size}
+      w={data?.width || 'auto'}
       // leftIcon={{ md: data?.icon && <data.icon /> }}
       bg={data.bg}
+      type={data?.type || 'button'}
       _hover={{ opacity: '.8' }}
       onClick={data.handleClick}
       color={data.color ? data?.color : '#000'}

@@ -4,9 +4,14 @@ import CommonButton from './common-button'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { CgProfile } from 'react-icons/cg'
 import { FaRegEye } from 'react-icons/fa6'
+import { IoMdLogOut } from 'react-icons/io'
+import axiosInstance from '../lib/axios-instance'
+import { useState } from 'react'
 
 const Header = () => {
   const { pathname } = useLocation()
+  const [isLoading, setIsLoading] = useState(false)
+
   const NavLinks = [
     {
       size: 'sm',
@@ -28,6 +33,22 @@ const Header = () => {
     }
   ]
   const navigate = useNavigate()
+  const handleLogout = async () => {
+    setIsLoading(true)
+    axiosInstance({
+      url: '/account/logout',
+      method: 'POST'
+    })
+      .then((data) => {
+        console.log(data)
+        if (data.status == 200) {
+          navigate('/login')
+        }
+      })
+      .catch((err) => console.log(err))
+      .finally(() => setIsLoading(false))
+  }
+
   return (
     <HStack
       mt={4}
@@ -64,17 +85,32 @@ const Header = () => {
           }}
         /> */}
       </HStack>
-      <CommonButton
-        data={{
-          size: 'sm',
-          break: true,
-          icon: FaRegEye,
-          bg: '#fff',
-          text: 'Preview',
-          border: `1px solid #633BEF`,
-          handleClick: () => navigate('/preview')
-        }}
-      />
+      <HStack>
+        <CommonButton
+          data={{
+            size: 'sm',
+            break: true,
+            icon: FaRegEye,
+            bg: '#fff',
+            text: 'Preview',
+            border: `1px solid #633BEF`,
+            handleClick: () => navigate('/preview')
+          }}
+        />
+        <CommonButton
+          data={{
+            size: 'sm',
+            break: true,
+            icon: IoMdLogOut,
+            isLoading,
+            bg: '#fff',
+            text: 'Logout',
+            color: '#EB393E',
+            border: `1px solid #EB393E`,
+            handleClick: handleLogout
+          }}
+        />
+      </HStack>
     </HStack>
   )
 }
