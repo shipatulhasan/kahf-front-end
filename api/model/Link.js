@@ -14,7 +14,8 @@ const LinkSchema = new mongoose.Schema(
       type: String
     },
     isValid: {
-      type: Boolean
+      valid: { type: Boolean },
+      message: { type: String }
     }
   },
   { timestamps: true }

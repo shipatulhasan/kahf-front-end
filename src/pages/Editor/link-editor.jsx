@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   HStack,
-  IconButton,
   Input,
   Select,
   Stack,
@@ -11,10 +10,12 @@ import {
   VStack
 } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { FaGithub, FaLink, FaYoutube } from 'react-icons/fa'
-import PreviewCard from '../../components/preview-card'
-import PageLaout from '../../layout/page-layout'
+import { MdDragHandle } from 'react-icons/md'
 import { useDispatch, useSelector } from 'react-redux'
+import CommonButton from '../../components/common-button'
+import PreviewCard from '../../components/preview-card'
 import {
   addLink,
   removeLink,
@@ -22,10 +23,9 @@ import {
   updateLink,
   updateLinksOrder
 } from '../../features/profileSlice'
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
-import { MdDragHandle } from 'react-icons/md'
-import CommonButton from '../../components/common-button'
+import PageLaout from '../../layout/page-layout'
 import axiosInstance from '../../lib/axios-instance'
+import { isValidUrl } from '../../lib/handler'
 
 const LinkEditor = () => {
   return (
@@ -44,14 +44,6 @@ const CustomizeLinks = () => {
   const [isLoading, setIsLoading] = useState(false)
   const dispatch = useDispatch()
   const toast = useToast()
-  const isValidUrl = (url) => {
-    try {
-      new URL(url)
-      return true
-    } catch (_) {
-      return false
-    }
-  }
   const platforms = [
     {
       label: 'GitHub',
@@ -78,7 +70,10 @@ const CustomizeLinks = () => {
   const handleInputChange = (i, field, value) => {
     const currentLink = links[i]
     const selected = platforms.find((i) => i.platform == value)
-    const isValid = field === 'url' ? isValidUrl(value) : currentLink.isValid
+    const isValid =
+      field === 'url'
+        ? isValidUrl(value, currentLink?.platform)
+        : currentLink.isValid
     dispatch(
       updateLink({
         id: i,
@@ -233,19 +228,25 @@ const CustomizeLinks = () => {
                           ))}
                         </Select>
                       </Stack>
-
-                      {/* Link Input */}
                       <Stack align='start' spacing={2} mt={4}>
                         <Text>Link</Text>
                         <Input
                           placeholder='Enter your link'
                           value={link.url}
-                          isInvalid={!link?.isValid}
+                          isInvalid={!link?.isValid?.valid}
                           errorBorderColor='red.500'
                           onChange={(e) =>
                             handleInputChange(i, 'url', e.target.value)
                           }
                         />
+                        {!link?.isValid?.valid && (
+                          <Text
+                            color={'red'}
+                            fontWeight={'500'}
+                            fontSize={'13px'}>
+                            {link?.isValid?.message}
+                          </Text>
+                        )}
                       </Stack>
                     </Box>
                   )}
