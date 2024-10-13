@@ -3,6 +3,7 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
+  Image,
   Input,
   Stack,
   Text
@@ -34,7 +35,11 @@ const FormLayout = ({ data }) => {
   return (
     <Stack alignItems={'center'}>
       <Box maxW={'340px'} bg='white' w='sm' p={6} rounded={'xl'} boxShadow='lg'>
-        <Text fontSize='xl' fontWeight='bold'>
+        <Image
+          w={'80px'}
+          src='https://i.ibb.co.com/rvpb0wK/Screenshot-2024-10-11-210901.png'
+        />
+        <Text fontSize='xl' fontWeight='bold' mt={4}>
           {data.title}
         </Text>
         <Stack as={'form'} onSubmit={data?.handleSubmit} spacing={4} mt={6}>
@@ -75,7 +80,7 @@ const FormLayout = ({ data }) => {
           {data?.footerText} please{' '}
           <Text as={'span'} color='#633BEF' textDecoration={'underline'}>
             <Link to={`/${data?.footerButtonText}`}>
-              {data?.footerButtonText.replace(/-/g, ' ')}
+              {data?.footerButtonText.replace(/-/g, '')}
             </Link>
           </Text>
         </Text>
