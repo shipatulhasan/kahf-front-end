@@ -62,8 +62,8 @@ const CustomizeLinks = () => {
     {
       label: 'Custom Link',
       icon: FaLink,
-      platform: 'custom',
       background: '#633BEF',
+      platform: 'custom',
       url: ''
     }
   ]
@@ -135,7 +135,15 @@ const CustomizeLinks = () => {
     })
       .then((res) => {
         if (res.status == 200) {
-          res?.data?.data?.length && dispatch(saveLinks(res?.data?.data))
+          if (res?.data?.data?.length) {
+            const savedLinks = res?.data?.data.map((i) => {
+              const { icon, background, label } = platforms.find(
+                (j) => j?.platform == i?.platform
+              )
+              return { ...i, icon, background, label }
+            })
+            dispatch(saveLinks(savedLinks))
+          }
         }
       })
       .catch((err) => console.log(err))
@@ -153,6 +161,7 @@ const CustomizeLinks = () => {
       </VStack>
       <Button
         colorScheme='purple'
+        isDisabled={links.length > 2}
         onClick={() =>
           dispatch(
             addLink({
@@ -160,7 +169,8 @@ const CustomizeLinks = () => {
               icon: FaLink,
               platform: 'custom',
               background: '#633BEF',
-              url: ''
+              url: '',
+              isValid: { valid: false, message: '' }
             })
           )
         }

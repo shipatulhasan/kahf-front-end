@@ -40,7 +40,6 @@ const Header = () => {
       method: 'POST'
     })
       .then((data) => {
-        console.log(data)
         if (data.status == 200) {
           navigate('/login')
         }

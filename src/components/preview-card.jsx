@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux'
 const PreviewCard = ({ style }) => {
   const { profile_picture, email_address, first_name, last_name, links } =
     useSelector((state) => state.profile)
+
   return (
     <Stack alignItems={'center'} mt={style?.marginTop}>
       <Box
@@ -32,8 +33,6 @@ const PreviewCard = ({ style }) => {
             {email_address}
           </Text>
         </VStack>
-
-        {/* Social Media Buttons */}
         <VStack spacing={4} mt={6}>
           {links?.map((item, i) => (
             <HStack

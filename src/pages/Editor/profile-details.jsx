@@ -40,7 +40,6 @@ const DetailsForm = () => {
 
   const dispatch = useDispatch()
   const [errors, setErrors] = useState({ first_name, last_name })
-  console.log(errors)
   const handleImageChange = (e) => {
     const file = e.target.files[0]
     if (file) {
